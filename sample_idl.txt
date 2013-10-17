@@ -1,0 +1,10 @@
+
+interface HelloServer {
+
+    local 
+
+    oneway void sayHello();
+    int say(in String msg);
+    void sayTo(in String msg, inout String dest);
+
+};
