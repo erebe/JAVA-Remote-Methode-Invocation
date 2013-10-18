@@ -4,7 +4,7 @@
  */
 package main;
 
-import rmi.Stub;
+import idl.Stub;
 import idl.Interface;
 import idl.Parser;
 import java.util.logging.Level;
