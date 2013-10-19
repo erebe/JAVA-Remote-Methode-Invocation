@@ -4,20 +4,14 @@
  */
 package rmi;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.Socket;
-import java.util.List;
+import rmi.RemoteThread.Future;
+import rmi.classimpl.LocalHelloServer;
 
 public class InvokationObject implements Serializable {
 
@@ -35,7 +29,7 @@ public class InvokationObject implements Serializable {
 
         System.out.println("Binding the socket" + host + " : " + portDest);
         channel = new Socket(host, portDest);
-        channel.setSoTimeout(10000);
+        channel.setSoTimeout(1000000);
     }
 
     public void close() throws IOException {
@@ -104,5 +98,12 @@ public class InvokationObject implements Serializable {
         } catch (Throwable ex) {
             
         }
+    }
+
+    public <T> Future<T> asyncRemoteCall(LocalHelloServer aThis, String funcName, Class<?>[] cls, Object[] args) {
+        RemoteThread<T> th = new RemoteThread<>(aThis, funcName, cls, args);
+        th.start();
+    
+        return th.getFuture();
     }
 }

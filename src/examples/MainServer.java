@@ -4,7 +4,7 @@
  */
 package examples;
 
-import rmi.classimpl.HelloServer;
+import rmi.classimpl.IHelloServer;
 import java.io.IOException;
 import rmi.Service;
 
@@ -19,7 +19,7 @@ public class MainServer {
         
         Service.getInstance().initRMIServer("localhost", 8888);
         
-        HelloServer toto = new HHelloServer();
+        IHelloServer toto = new HHelloServer();
         Service.getInstance().register("HelloServer", toto);
         
         Service.getInstance().waitForEver();
