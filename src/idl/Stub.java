@@ -89,6 +89,21 @@ public class Stub {
 
     private static void generateBodyLocalMethod(StringBuilder b, Interface.Method m) {
 
+        for (String[] arg : m.arguments) {
+            switch (arg[0]) {
+                case "inout":
+                case "out":
+                    b.append("\t\tObject ");
+                    b.append(arg[2]).append("p");
+                    b.append(" = getRemote().proxifyVariable(");
+                    b.append(arg[2]);
+                    b.append(", ");
+                    b.append(arg[1].split("<")[0]);
+                    b.append(".class);\n");
+                    break;
+            }
+        }
+
         b.append("\t\tObject[] args = new Object[] {");
         for (String[] args : m.arguments) {
             int i = 1;
@@ -97,6 +112,11 @@ public class Stub {
             }
 
             b.append(args[i]);
+            if (args[0].equals("out") || args[0].equals("inout")) {
+                b.append("p");
+            }
+
+
             b.append(",");
         }
         b.append("};\n");
@@ -120,10 +140,29 @@ public class Stub {
         b.append(m.isOneway.toString());
         b.append(");\n");
 
+        if (!m.isOneway) {
+            int i = 0;
+            for (String[] arg : m.arguments) {
+                switch (arg[0]) {
+                    case "inout":
+                    case "out":
+                        b.append("\t\tgetRemote().replayOn(rets[");
+                        b.append(i + 1);
+                        b.append("], ");
+                        b.append(arg[2]);
+                        b.append(");");
+                        break;
+                }
+                i++;
+            }
+        }
 
-        if(m.returnType.equals("void")) 
+        if (m.returnType.equals("void")) {
             return;
-   
+        }
+
+
+
         b.append("\t\treturn (");
         b.append(m.returnType);
         b.append(") rets[0];");

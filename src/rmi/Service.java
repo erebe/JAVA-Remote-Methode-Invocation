@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rmi.classimpl.HelloServer;
 
 //        Object obj = registers.get("HelloServer");
 //        Method m = obj.getClass().getMethod("sayHello", new Class[] {});

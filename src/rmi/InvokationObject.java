@@ -15,9 +15,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 public class InvokationObject implements Serializable {
 
@@ -123,6 +123,18 @@ public class InvokationObject implements Serializable {
             return rets;
         } catch (ClassNotFoundException ex) {
             return rets;
+        }
+    }
+
+    public Object proxifyVariable(Object msg, Class<?> aClass) {
+      return Proxy.newProxyInstance(RemoteProxy.class.getClassLoader(), new Class[] { List.class }, new RemoteProxy(msg));
+    }
+
+    public void replayOn(Object proxy, Object subject) {
+        try {
+            ((RemoteProxy) Proxy.getInvocationHandler(proxy)).replayOn(subject);
+        } catch (Throwable ex) {
+            
         }
     }
 }

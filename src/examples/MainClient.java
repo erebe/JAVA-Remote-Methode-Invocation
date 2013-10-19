@@ -23,7 +23,8 @@ public class MainClient {
           
           ArrayList<String> str = new ArrayList<>();
           str.add(" Romain");
-          System.out.println(test.say(str));
+          test.say(str);
+          System.out.println(str);
           
       }
 }

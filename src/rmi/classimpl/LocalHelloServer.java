@@ -29,11 +29,12 @@ public class LocalHelloServer extends Remote implements HelloServer, Serializabl
 
 	@Override
 	public void sayTo(String msg, String dest) throws IOException {
-		Object[] args = new Object[] {msg,dest,};
+		Object destp = getRemote().proxifyVariable(dest, String.class);
+		Object[] args = new Object[] {msg,destp,};
 		Class<?>[] cls = new Class<?>[] { String.class,String.class,};
 
 		Object[] rets = getRemote().remoteCall("sayTo", cls, args, false);
-
+		getRemote().replayOn(rets[2], dest);
 	}
 
 
