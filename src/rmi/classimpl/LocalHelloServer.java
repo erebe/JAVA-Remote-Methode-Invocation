@@ -37,5 +37,15 @@ public class LocalHelloServer extends Remote implements HelloServer, Serializabl
 		getRemote().replayOn(rets[2], dest);
 	}
 
+	@Override
+	public void fillMe(List<String> msg) throws IOException {
+		Object msgp = getRemote().proxifyVariable(msg, List.class);
+		Object[] args = new Object[] {msgp,};
+		Class<?>[] cls = new Class<?>[] { List.class,};
+
+		Object[] rets = getRemote().remoteCall("fillMe", cls, args, false);
+		getRemote().replayOn(rets[1], msg);
+	}
+
 
 }

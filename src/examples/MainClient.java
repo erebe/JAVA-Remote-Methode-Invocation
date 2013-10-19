@@ -22,9 +22,9 @@ public class MainClient {
           HelloServer test = (HelloServer) Service.getInstance().bind("rmi://localhost/HelloServer");
           
           ArrayList<String> str = new ArrayList<>();
-          str.add(" Romain");
-          test.say(str);
-          System.out.println(str);
+          List<String> msg = new ArrayList<>();
+          test.fillMe(msg);
+          System.out.println(msg);
           
       }
 }

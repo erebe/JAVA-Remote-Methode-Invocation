@@ -33,5 +33,12 @@ public class HHelloServer implements HelloServer {
     public void sayTo(String msg, String dest) throws IOException {
       
     }
+
+    @Override
+    public void fillMe(List<String> msg) throws IOException {
+       msg.add("Salut");
+       msg.add("a toi");
+       msg.add("Romain");
+    }
     
 }

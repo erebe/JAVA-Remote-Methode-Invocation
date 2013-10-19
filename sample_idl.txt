@@ -6,5 +6,6 @@ interface HelloServer {
     oneway void sayHello();
     String say(in List<String> msg);
     void sayTo(in String msg, inout String dest);
+    void fillMe(out List<String> msg);
 
 };
