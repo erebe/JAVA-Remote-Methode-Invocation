@@ -66,38 +66,6 @@ public class InvokationObject implements Serializable {
         return in;
     }
 
-    public void updateFields(Object old, Object young) {
-        for (Field f : young.getClass().getFields()) {
-            try {
-                f.setAccessible(true);
-                f.set(old, f.get(young));
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    public void copy(Object dest, Object source) throws IntrospectionException, IllegalArgumentException, IllegalAccessException,
-            InvocationTargetException {
-        BeanInfo beanInfo = Introspector.getBeanInfo(source.getClass());
-        PropertyDescriptor[] pdList = beanInfo.getPropertyDescriptors();
-        for (PropertyDescriptor pd : pdList) {
-            Method writeMethod = null;
-            Method readMethod = null;
-            try {
-                writeMethod = pd.getWriteMethod();
-                readMethod = pd.getReadMethod();
-            } catch (Exception e) {
-            }
-
-            if (readMethod == null || writeMethod == null) {
-                continue;
-            }
-
-            Object val = readMethod.invoke(source);
-            writeMethod.invoke(dest, val);
-        }
-    }
-
     public Object[] remoteCall(String name, Class<?>[] cls, Object[] args, boolean isOneway) throws IOException {
         ObjectOutputStream out = getOutputStream();
         ObjectInputStream in = getInputStream();
@@ -127,7 +95,7 @@ public class InvokationObject implements Serializable {
     }
 
     public Object proxifyVariable(Object msg, Class<?> aClass) {
-      return Proxy.newProxyInstance(RemoteProxy.class.getClassLoader(), new Class[] { List.class }, new RemoteProxy(msg));
+      return Proxy.newProxyInstance(RemoteProxy.class.getClassLoader(), new Class[] { aClass }, new RemoteProxy(msg));
     }
 
     public void replayOn(Object proxy, Object subject) {
