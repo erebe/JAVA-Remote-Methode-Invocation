@@ -11,7 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -80,9 +82,15 @@ public class Service {
                         Object t = registers.get(header.bindedTo);
                         Class<?>[] cls = (Class<?>[]) in.readObject();
                         Object[] args = (Object[]) in.readObject();
+                        
 
                         Method m = t.getClass().getMethod(header.methodName, cls);
-                        m.invoke(t, args);
+                        Object ret = m.invoke(t, args);
+                        List<Object> tmp = new ArrayList<>();
+                        tmp.add(ret);
+                        tmp.addAll(Arrays.asList(args));
+                        Object[] rets = tmp.toArray();
+                        out.writeObject(rets);
 
                         break;
 

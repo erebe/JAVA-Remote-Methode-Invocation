@@ -6,6 +6,8 @@ package examples;
 
 import rmi.classimpl.HelloServer;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,11 +21,12 @@ public class HHelloServer implements HelloServer {
     }
 
     @Override
-    public int say(String msg) throws IOException {
+    public String say(List<String> msg) throws IOException {
         
-        System.out.println("Salut à toi" + msg);
+        msg.add("Toto");
+        return "Salut à toi " + msg.get(0);
       
-        return 0;
+
     }
 
     @Override

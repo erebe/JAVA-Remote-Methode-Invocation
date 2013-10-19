@@ -4,7 +4,7 @@ interface HelloServer {
     local 
 
     oneway void sayHello();
-    int say(in String msg);
+    String say(in List<String> msg);
     void sayTo(in String msg, inout String dest);
 
 };

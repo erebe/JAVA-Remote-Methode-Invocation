@@ -18,12 +18,9 @@ public class Stub {
     private static void generateImport(StringBuilder b, Interface inter) {
         b.append("package rmi.classimpl;\n\n");
         b.append("import rmi.Service;\n");
-        b.append("import java.io.ObjectOutputStream;\n");
-        b.append("import java.io.ObjectInputStream;\n");
         b.append("import java.io.Serializable;\n");
         b.append("import java.io.IOException;\n");
         b.append("import rmi.Remote;\n");
-        b.append("import rmi.RemoteHeader;\n");
         b.append("\n");
     }
 
@@ -106,31 +103,31 @@ public class Stub {
 
         b.append("\t\tClass<?>[] cls = new Class<?>[] { ");
         for (String[] args : m.arguments) {
-            int i = 1;
+            int i = 0;
             if (args.length > 2) {
                 i++;
             }
 
-            b.append(args[i]);
-            b.append(".getClass(),");
+            b.append(args[i].split("<")[0]);
+            b.append(".class,");
         }
         b.append("};\n\n");
 
 
-
-        b.append("\n\t\tObjectOutputStream out = getRemote().getOutputStream();");
-        b.append("\n\t\tObjectInputStream in = getRemote().getInputStream();");
-        b.append("\n\t\tRemoteHeader header = new RemoteHeader();");
-        b.append("\n\t\theader.order = \"CALL_METHOD\";");
-        b.append("\n\t\theader.methodName = \"");
+        b.append("\t\tObject[] rets = getRemote().remoteCall(\"");
         b.append(m.name);
-        b.append("\";");
-        b.append("\n\t\theader.bindedTo = getRemote().objectName;");
-        b.append("\n\t\tout.writeObject(header);");
-        b.append("\n\t\tout.writeObject(cls);");
-        b.append("\n\t\tout.writeObject(args);");
-        b.append("\n\t\tout.flush();");
-        b.append("\n\t\tgetRemote().close();");
+        b.append("\", cls, args, ");
+        b.append(m.isOneway.toString());
+        b.append(");\n");
+
+
+        if(m.returnType.equals("void")) 
+            return;
+   
+        b.append("\t\treturn (");
+        b.append(m.returnType);
+        b.append(") rets[0];");
+
     }
 
     private static String generateInterface(Interface inter) {

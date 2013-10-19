@@ -5,6 +5,8 @@
 package examples;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import rmi.Service;
 import rmi.classimpl.HelloServer;
 
@@ -18,7 +20,10 @@ public class MainClient {
           
           Service.getInstance().initRMIServer("localhost", 8888);
           HelloServer test = (HelloServer) Service.getInstance().bind("rmi://localhost/HelloServer");
-          test.say(" Romain");
+          
+          ArrayList<String> str = new ArrayList<>();
+          str.add(" Romain");
+          System.out.println(test.say(str));
           
       }
 }

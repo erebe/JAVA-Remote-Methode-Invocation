@@ -5,10 +5,12 @@
 package rmi.classimpl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public interface HelloServer {
 	void sayHello() throws IOException;
-	int say(String msg) throws IOException;
+	String say(List<String> msg) throws IOException;
 	void sayTo(String msg, String dest) throws IOException;
 
 }
